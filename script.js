@@ -8,13 +8,20 @@ var Controller = function(view, model) {
 /**********************************************************/
 
 var View = function(params) {
+  this.initElements(params);
+
+  this.onSubmit = null;
+  this.onReset = null;
+}
+
+View.prototype.initElements = function(params) {
   this.content =            params.content;
   this.submitButton =       params.submitButton;
   this.input =              params.input;
   this.feedback =           params.feedback;
   this.numGuessesDisplay =  params.numGuessesDisplay;
   this.resetContainer =     params.resetContainer;
-  this.resetButton =        params.resetButton;
+  this.resetButton =        params.resetButton;  
 }
 
 /**********************************************************/
@@ -36,6 +43,10 @@ Model.prototype.decreaseTries = function() {
   this.tries -= 1;
 }
 
+Model.prototype.hasTries = function() {
+  return this.tries > 0;
+}
+
 /**********************************************************/
 
 var model = new Model({ 
@@ -43,6 +54,8 @@ var model = new Model({
   max: 100, 
   tries: 10 
 });
+
+console.log(model);
 
 var view = new View({
   content:         document.getElementById('content'),
