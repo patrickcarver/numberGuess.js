@@ -12,14 +12,22 @@ var Controller = function(view, model) {
 }
 
 Controller.prototype.onSubmit = function() {
-  var guess = this.view.input.value;
+  this.model.decreaseTries();
 
-  if (guess == this.model.answer) {
-    this.view.showCorrect();
-  } else if (guess > this.model.answer) {
-    this.view.showTooHigh();
+  if (this.model.hasTries()) {
+    var guess = this.view.input.value;
+
+    if (guess == this.model.answer) {
+      this.view.showCorrect();
+    } else if (guess > this.model.answer) {
+      this.view.showTooHigh();
+      this.view.displayNumOfTries(this.model.tries);
+    } else {
+      this.view.showTooLow();
+      this.view.displayNumOfTries(this.model.tries);
+    }
   } else {
-    this.view.showTooLow();
+    this.view.showOutOfTries();
   }
 }
 
@@ -61,6 +69,7 @@ View.prototype.displayNumOfTries = function (tries) {
 
 View.prototype.showCorrect = function() {
   this.feedback.innerHTML = 'That is correct!';
+  this.resetContainer.style.display = 'block';
 }
 
 View.prototype.showTooHigh = function() {
@@ -69,6 +78,11 @@ View.prototype.showTooHigh = function() {
 
 View.prototype.showTooLow = function() {
   this.feedback.innerHTML = 'Too low';
+}
+
+View.prototype.showOutOfTries = function() {
+  this.feedback.innerHTML = 'Sorry, no more tries.';
+  this.resetContainer.style.display = 'block';
 }
 
 /**********************************************************/
