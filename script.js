@@ -34,7 +34,9 @@ Controller.prototype.onSubmit = function() {
 }
 
 Controller.prototype.onReset = function() {
-  console.log("onReset");
+  this.model.resetTries();
+  this.view.displayNumOfTries(this.model.tries);
+
 }
 
 /**********************************************************/
@@ -45,7 +47,7 @@ var View = function(params) {
   this.onSubmit = null;
   this.onReset = null;
 
-  this.resetContainer.style.display = 'none';
+  this.view.showResetContainer(false);
 }
 
 View.prototype.initElements = function(params) {
@@ -63,13 +65,17 @@ View.prototype.initEventListeners = function() {
   this.resetButton.addEventListener('click', this.onReset);
 }
 
-View.prototype.displayNumOfTries = function (tries) {
+View.prototype.displayNumOfTries = function(tries) {
   this.triesDisplay.innerHTML = tries;
+}
+
+View.prototype.showResetContainer = function(value) {
+  this.resetContainer.style.display = value ? 'block' : 'none';
 }
 
 View.prototype.showCorrect = function() {
   this.feedback.innerHTML = 'That is correct!';
-  this.resetContainer.style.display = 'block';
+  this.showResetContainer(true);
 }
 
 View.prototype.showTooHigh = function() {
@@ -82,7 +88,7 @@ View.prototype.showTooLow = function() {
 
 View.prototype.showOutOfTries = function() {
   this.feedback.innerHTML = 'Sorry, no more tries.';
-  this.resetContainer.style.display = 'block';
+  this.showResetContainer(true);
 }
 
 /**********************************************************/
