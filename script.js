@@ -45,13 +45,13 @@ var model = new Model({
 });
 
 var view = new View({
-  content =         document.getElementById('content');
-  submitButton =    document.getElementById('submit-button');
-  input =           document.getElementById('input-guess');
-  feedback =        document.getElementById('feedback');
-  guessDisplay =    document.getElementById('number-of-guesses');
-  resetContainer =  document.getElementById('reset-container');
-  resetButton =     document.getElementById('reset-button');
+  content:         document.getElementById('content'),
+  submitButton:    document.getElementById('submit-button'),
+  input:           document.getElementById('input-guess'),
+  feedback:        document.getElementById('feedback'),
+  guessDisplay:    document.getElementById('number-of-guesses'),
+  resetContainer:  document.getElementById('reset-container'),
+  resetButton:     document.getElementById('reset-button')
 });
 
 var controller = new Controller(view, model);
