@@ -47,7 +47,7 @@ var View = function(params) {
   this.onSubmit = null;
   this.onReset = null;
 
-  this.view.showResetContainer(false);
+  this.showResetContainer(false);
 }
 
 View.prototype.initElements = function(params) {
