@@ -8,10 +8,12 @@ var model = {
 };
 
 var content = document.getElementById('content');
-var button = document.getElementById('submit-button');
+var submitButton = document.getElementById('submit-button');
 var input = document.getElementById('input-guess');
 var feedback = document.getElementById('feedback');
 var guessDisplay = document.getElementById('number-of-guesses');
+var resetContainer = document.getElementById('reset-container');
+var resetButton = document.getElementById('reset-button');
 
 var checkGuessEvent = new Event('check guess');
 
@@ -33,6 +35,7 @@ function checkGuess() {
   } else {
     guessDisplay.innerHTML = model.numberOfGuesses;
     feedback.innerHTML = 'Sorry, you are out of guesses.';
+
   }
 }
 
@@ -48,4 +51,4 @@ function onSubmit() {
 
 content.addEventListener('check guess', checkGuess);
 
-button.addEventListener('click', onSubmit);
+submitButton.addEventListener('click', onSubmit);
