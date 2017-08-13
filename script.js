@@ -1,19 +1,45 @@
-function getRandomInt(min, max) {
+var Controller = function(view, model) {
+  this.view = view;
+  this.model = model;
+}
+
+var View = function() {
+
+}
+
+var Model = function(min, max, tries) {
+  this.answer = this.getRandomInt(min, max);
+  this.tries = tries;
+}
+
+Model.prototype.getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+Model.prototype.decreaseTries = function() {
+  this.tries -= 1;
+}
+
+/**********************************************************/
+
+
+
+
+
+
 
 var model = {
   answer: getRandomInt(1, 100),
   numberOfGuesses: 10
 };
 
-var content = document.getElementById('content');
-var submitButton = document.getElementById('submit-button');
-var input = document.getElementById('input-guess');
-var feedback = document.getElementById('feedback');
-var guessDisplay = document.getElementById('number-of-guesses');
-var resetContainer = document.getElementById('reset-container');
-var resetButton = document.getElementById('reset-button');
+var content =         document.getElementById('content');
+var submitButton =    document.getElementById('submit-button');
+var input =           document.getElementById('input-guess');
+var feedback =        document.getElementById('feedback');
+var guessDisplay =    document.getElementById('number-of-guesses');
+var resetContainer =  document.getElementById('reset-container');
+var resetButton =     document.getElementById('reset-button');
 
 var checkGuessEvent = new Event('check guess');
 
@@ -35,7 +61,6 @@ function checkGuess() {
   } else {
     guessDisplay.innerHTML = model.numberOfGuesses;
     feedback.innerHTML = 'Sorry, you are out of guesses.';
-
   }
 }
 
