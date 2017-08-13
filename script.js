@@ -35,8 +35,6 @@ Controller.prototype.onReset = function() {
   console.log("onReset");
 }
 
-
-
 /**********************************************************/
 
 var View = function(params) {
@@ -116,8 +114,6 @@ var model = new Model({
   tries: 10 
 });
 
-console.log(model);
-
 var view = new View({
   content:         document.getElementById('content'),
   submitButton:    document.getElementById('submit-button'),
@@ -129,54 +125,3 @@ var view = new View({
 });
 
 var controller = new Controller(view, model);
-
-
-
-/*
-
-
-var model = {
-  answer: getRandomInt(1, 100),
-  numberOfGuesses: 10
-};
-
-
-
-var checkGuessEvent = new Event('check guess');
-
-guessDisplay.innerHTML = model.numberOfGuesses;
-
-function checkGuess() {
-  model.numberOfGuesses--;
-
-  if (model.numberOfGuesses > 0) {
-    if (input.value === model.answer) {
-      feedback.innerHTML = 'That is correct!';
-    } else if (input.value > model.answer) {
-      guessDisplay.innerHTML = model.numberOfGuesses;
-      feedback.innerHTML = 'Too high.'
-    } else {
-      guessDisplay.innerHTML = model.numberOfGuesses;
-      feedback.innerHTML = 'Too low.';
-    }
-  } else {
-    guessDisplay.innerHTML = model.numberOfGuesses;
-    feedback.innerHTML = 'Sorry, you are out of guesses.';
-  }
-}
-
-function onSubmit() {
-  feedback.innerHTML = '';
-
-  if (input.value === '') {
-    feedback.innerHTML = 'Please enter a value.';
-  } else {
-    content.dispatchEvent(checkGuessEvent); 
-  }  
-}
-
-content.addEventListener('check guess', checkGuess);
-
-submitButton.addEventListener('click', onSubmit);
-
-*/
