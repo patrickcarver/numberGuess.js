@@ -8,17 +8,26 @@ var Controller = function(view, model) {
   this.view.onReset = this.onReset.bind(this);
 
   this.view.initEventListeners();
-
   this.view.displayNumOfTries(this.model.tries);
 }
 
 Controller.prototype.onSubmit = function() {
-  console.log("onSubmit");
+  var guess = this.view.input.value;
+
+  if (guess == this.model.answer) {
+    this.view.showCorrect();
+  } else if (guess > this.model.answer) {
+    this.view.showTooHigh();
+  } else {
+    this.view.showTooLow();
+  }
 }
 
 Controller.prototype.onReset = function() {
   console.log("onReset");
 }
+
+
 
 /**********************************************************/
 
@@ -48,6 +57,18 @@ View.prototype.initEventListeners = function() {
 
 View.prototype.displayNumOfTries = function (tries) {
   this.triesDisplay.innerHTML = tries;
+}
+
+View.prototype.showCorrect = function() {
+  this.feedback.innerHTML = 'That is correct!';
+}
+
+View.prototype.showTooHigh = function() {
+  this.feedback.innerHTML = 'Too high';
+}
+
+View.prototype.showTooLow = function() {
+  this.feedback.innerHTML = 'Too low';
 }
 
 /**********************************************************/
@@ -80,6 +101,8 @@ var model = new Model({
   max: 100, 
   tries: 10 
 });
+
+console.log(model);
 
 var view = new View({
   content:         document.getElementById('content'),
