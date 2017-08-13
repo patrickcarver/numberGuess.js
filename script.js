@@ -19,11 +19,13 @@ Controller.prototype.onSubmit = function() {
 
     if (guess == this.model.answer) {
       this.view.showCorrect();
-    } else if (guess > this.model.answer) {
-      this.view.showTooHigh();
-      this.view.displayNumOfTries(this.model.tries);
     } else {
-      this.view.showTooLow();
+      if (guess > this.model.answer) {
+        this.view.showTooHigh();
+      } else {
+        this.view.showTooLow();
+      }
+
       this.view.displayNumOfTries(this.model.tries);
     }
   } else {
@@ -92,6 +94,7 @@ var Model = function(params) {
 
   this.answer = this.getRandomInt(min, max);
   this.tries = tries;
+  this.maxTries = tries;
 }
 
 Model.prototype.getRandomInt = function(min, max) {
@@ -104,6 +107,10 @@ Model.prototype.decreaseTries = function() {
 
 Model.prototype.hasTries = function() {
   return this.tries > 0;
+}
+
+Model.prototype.resetTries = function() {
+  this.tries = this.maxTries;
 }
 
 /**********************************************************/
