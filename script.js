@@ -1,18 +1,34 @@
+/**********************************************************/
+
 var Controller = function(view, model) {
   this.view = view;
   this.model = model;
 }
 
-var View = function() {
+/**********************************************************/
 
+var View = function(params) {
+  this.content =            params.content;
+  this.submitButton =       params.submitButton;
+  this.input =              params.input;
+  this.feedback =           params.feedback;
+  this.numGuessesDisplay =  params.numGuessesDisplay;
+  this.resetContainer =     params.resetContainer;
+  this.resetButton =        params.resetButton;
 }
 
-var Model = function(min, max, tries) {
+/**********************************************************/
+
+var Model = function(params) {
+  var min = params.min || 1;
+  var max = params.max || 100;
+  var tries = params.tries || 10;
+
   this.answer = this.getRandomInt(min, max);
   this.tries = tries;
 }
 
-Model.prototype.getRandomInt(min, max) {
+Model.prototype.getRandomInt = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -22,10 +38,27 @@ Model.prototype.decreaseTries = function() {
 
 /**********************************************************/
 
+var model = new Model({ 
+  min: 1, 
+  max: 100, 
+  tries: 10 
+});
+
+var view = new View({
+  content =         document.getElementById('content');
+  submitButton =    document.getElementById('submit-button');
+  input =           document.getElementById('input-guess');
+  feedback =        document.getElementById('feedback');
+  guessDisplay =    document.getElementById('number-of-guesses');
+  resetContainer =  document.getElementById('reset-container');
+  resetButton =     document.getElementById('reset-button');
+});
+
+var controller = new Controller(view, model);
 
 
 
-
+/*
 
 
 var model = {
@@ -33,13 +66,7 @@ var model = {
   numberOfGuesses: 10
 };
 
-var content =         document.getElementById('content');
-var submitButton =    document.getElementById('submit-button');
-var input =           document.getElementById('input-guess');
-var feedback =        document.getElementById('feedback');
-var guessDisplay =    document.getElementById('number-of-guesses');
-var resetContainer =  document.getElementById('reset-container');
-var resetButton =     document.getElementById('reset-button');
+
 
 var checkGuessEvent = new Event('check guess');
 
@@ -77,3 +104,5 @@ function onSubmit() {
 content.addEventListener('check guess', checkGuess);
 
 submitButton.addEventListener('click', onSubmit);
+
+*/
