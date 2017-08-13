@@ -3,6 +3,21 @@
 var Controller = function(view, model) {
   this.view = view;
   this.model = model;
+
+  this.view.onSubmit = this.onSubmit.bind(this);
+  this.view.onReset = this.onReset.bind(this);
+
+  this.view.initEventListeners();
+
+  this.view.displayNumOfTries(this.model.tries);
+}
+
+Controller.prototype.onSubmit = function() {
+  console.log("onSubmit");
+}
+
+Controller.prototype.onReset = function() {
+  console.log("onReset");
 }
 
 /**********************************************************/
@@ -12,6 +27,8 @@ var View = function(params) {
 
   this.onSubmit = null;
   this.onReset = null;
+
+  this.resetContainer.style.display = 'none';
 }
 
 View.prototype.initElements = function(params) {
@@ -19,9 +36,18 @@ View.prototype.initElements = function(params) {
   this.submitButton =       params.submitButton;
   this.input =              params.input;
   this.feedback =           params.feedback;
-  this.numGuessesDisplay =  params.numGuessesDisplay;
+  this.triesDisplay =       params.triesDisplay;
   this.resetContainer =     params.resetContainer;
   this.resetButton =        params.resetButton;  
+}
+
+View.prototype.initEventListeners = function() {
+  this.submitButton.addEventListener('click', this.onSubmit);
+  this.resetButton.addEventListener('click', this.onReset);
+}
+
+View.prototype.displayNumOfTries = function (tries) {
+  this.triesDisplay.innerHTML = tries;
 }
 
 /**********************************************************/
@@ -55,14 +81,12 @@ var model = new Model({
   tries: 10 
 });
 
-console.log(model);
-
 var view = new View({
   content:         document.getElementById('content'),
   submitButton:    document.getElementById('submit-button'),
   input:           document.getElementById('input-guess'),
   feedback:        document.getElementById('feedback'),
-  guessDisplay:    document.getElementById('number-of-guesses'),
+  triesDisplay:    document.getElementById('number-of-guesses'),
   resetContainer:  document.getElementById('reset-container'),
   resetButton:     document.getElementById('reset-button')
 });
