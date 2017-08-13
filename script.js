@@ -18,19 +18,21 @@ var checkGuessEvent = new Event('check guess');
 guessDisplay.innerHTML = model.numberOfGuesses;
 
 function checkGuess() {
+  model.numberOfGuesses--;
+
   if (model.numberOfGuesses > 0) {
     if (input.value === model.answer) {
       feedback.innerHTML = 'That is correct!';
     } else if (input.value > model.answer) {
-      model.numberOfGuesses--;
-
+      guessDisplay.innerHTML = model.numberOfGuesses;
       feedback.innerHTML = 'Too high.'
     } else {
-      model.numberOfGuesses--;
+      guessDisplay.innerHTML = model.numberOfGuesses;
       feedback.innerHTML = 'Too low.';
     }
   } else {
-
+    guessDisplay.innerHTML = model.numberOfGuesses;
+    feedback.innerHTML = 'Sorry, you are out of guesses.';
   }
 }
 
