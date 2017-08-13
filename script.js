@@ -11,11 +11,27 @@ var content = document.getElementById('content');
 var button = document.getElementById('submit-button');
 var input = document.getElementById('input-guess');
 var feedback = document.getElementById('feedback');
+var guessDisplay = document.getElementById('number-of-guesses');
 
 var checkGuessEvent = new Event('check guess');
 
+guessDisplay.innerHTML = model.numberOfGuesses;
+
 function checkGuess() {
-  
+  if (model.numberOfGuesses > 0) {
+    if (input.value === model.answer) {
+      feedback.innerHTML = 'That is correct!';
+    } else if (input.value > model.answer) {
+      model.numberOfGuesses--;
+
+      feedback.innerHTML = 'Too high.'
+    } else {
+      model.numberOfGuesses--;
+      feedback.innerHTML = 'Too low.';
+    }
+  } else {
+
+  }
 }
 
 function onSubmit() {
