@@ -9,6 +9,9 @@ var model = {
 
 var content = document.getElementById('content');
 var button = document.getElementById('submit-button');
+var input = document.getElementById('input-guess');
+var feedback = document.getElementById('feedback');
+
 var checkGuessEvent = new Event('check guess');
 
 function checkGuess() {
@@ -16,7 +19,13 @@ function checkGuess() {
 }
 
 function onSubmit() {
-  content.dispatchEvent(checkGuessEvent); 
+  feedback.innerHTML = '';
+
+  if (input.value === '') {
+    feedback.innerHTML = 'Please enter a value.';
+  } else {
+    content.dispatchEvent(checkGuessEvent); 
+  }  
 }
 
 content.addEventListener('check guess', checkGuess);
