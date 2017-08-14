@@ -36,7 +36,7 @@ Controller.prototype.onSubmit = function() {
 Controller.prototype.onReset = function() {
   this.model.resetTries();
   this.view.displayNumOfTries(this.model.tries);
-
+  this.view.clearInput();
 }
 
 /**********************************************************/
@@ -76,11 +76,6 @@ View.prototype.showResetContainer = function(value) {
   this.resetContainer.style.display = value ? 'block' : 'none';
 }
 
-View.prototype.showCorrect = function() {
-  this.feedback.innerHTML = 'That is correct!';
-  this.showResetContainer(true);
-}
-
 View.prototype.showTooHigh = function() {
   this.feedback.innerHTML = 'Too high';
 }
@@ -89,9 +84,18 @@ View.prototype.showTooLow = function() {
   this.feedback.innerHTML = 'Too low';
 }
 
+View.prototype.showCorrect = function() {
+  this.feedback.innerHTML = 'That is correct!';
+  this.showResetContainer(true);
+}
+
 View.prototype.showOutOfTries = function() {
   this.feedback.innerHTML = 'Sorry, no more tries.';
   this.showResetContainer(true);
+}
+
+View.prototype.clearInput = function() {
+  this.input.value = "";
 }
 
 /**********************************************************/
