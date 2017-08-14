@@ -37,6 +37,7 @@ Controller.prototype.onReset = function() {
   this.model.resetTries();
   this.view.displayNumOfTries(this.model.tries);
   this.view.clearInput();
+  this.view.showResetContainer(false);
 }
 
 /**********************************************************/
