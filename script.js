@@ -4,10 +4,10 @@ var Controller = function(view, model) {
   this.view = view;
   this.model = model;
 
-  this.view.onSubmit = this.onSubmit.bind(this);
-  this.view.onReset = this.onReset.bind(this);
+  submitFunction = this.onSubmit.bind(this);
+  resetFunction = this.onReset.bind(this);
 
-  this.view.initEventListeners();
+  this.view.initEventListeners(submitFunction, resetFunction);
   this.view.displayNumOfTries(this.model.tries);
 }
 
@@ -60,7 +60,10 @@ View.prototype.initElements = function(params) {
   this.resetButton =        params.resetButton;  
 }
 
-View.prototype.initEventListeners = function() {
+View.prototype.initEventListeners = function(submitFunction, resetFunction) {
+  this.onSubmit = submitFunction;
+  this.onReset = resetFunction;
+
   this.submitButton.addEventListener('click', this.onSubmit);
   this.resetButton.addEventListener('click', this.onReset);
 }
