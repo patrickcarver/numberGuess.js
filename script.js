@@ -1,141 +1,146 @@
 /**********************************************************/
 
-var Controller = function(view, model) {
-  this.view = view;
-  this.model = model;
+class Controller {
+  constructor(view, model) {
+    this.view = view;
+    this.model = model;
 
-  submitFunction = this.onSubmit.bind(this);
-  resetFunction = this.onReset.bind(this);
+    let submitFunction = this.onSubmit.bind(this);
+    let resetFunction = this.onReset.bind(this);
 
-  this.view.initEventListeners(submitFunction, resetFunction);
-  this.view.displayNumOfTries(this.model.tries);
-}
+    this.view.initEventListeners(submitFunction, resetFunction);
+    this.view.displayNumOfTries(this.model.tries);
+  }
 
-Controller.prototype.onSubmit = function() {
-  this.model.decreaseTries();
+  onSubmit() {
+    this.model.decreaseTries();
 
-  if (this.model.hasTries()) {
-    var guess = this.view.input.value;
+    if (this.model.hasTries()) {
+      var guess = this.view.input.value;
 
-    if (guess == this.model.answer) {
-      this.view.showCorrect();
-    } else {
-      if (guess > this.model.answer) {
-        this.view.showTooHigh();
+      if (guess == this.model.answer) {
+        this.view.showEnd('That is correct!');
       } else {
-        this.view.showTooLow();
-      }
+        if (guess > this.model.answer) {
+          this.view.showResponse('Too high');
+        } else {
+          this.view.showResponse('Too low');
+        }
 
-      this.view.displayNumOfTries(this.model.tries);
-    }
-  } else {
-    this.view.showOutOfTries();
+        this.view.displayNumOfTries(this.model.tries);
+      }
+    } else {
+      this.view.showEnd('Sorry, no more tries.');
+    }    
+  }
+
+  onReset() {
+    this.model.reset();
+    this.view.displayNumOfTries(this.model.tries);
+    this.view.clearInput();
+    this.view.showResetContainer(false);
   }
 }
 
-Controller.prototype.onReset = function() {
-  this.model.resetTries();
-  this.view.displayNumOfTries(this.model.tries);
-  this.view.clearInput();
-  this.view.showResetContainer(false);
+/**********************************************************/
+
+class View {
+  constructor(params) {
+    this.initElements(params);
+
+    this.onSubmit = null;
+    this.onReset = null;
+
+    this.showResetContainer(false);
+  }
+
+  initElements(params) {
+    this.content =            params.content;
+    this.submitButton =       params.submitButton;
+    this.input =              params.input;
+    this.feedback =           params.feedback;
+    this.triesDisplay =       params.triesDisplay;
+    this.resetContainer =     params.resetContainer;
+    this.resetButton =        params.resetButton;      
+  }
+
+  initEventListeners(submitFunction, resetFunction) {
+    this.onSubmit = submitFunction;
+    this.onReset = resetFunction;
+
+    this.submitButton.addEventListener('click', this.onSubmit);
+    this.resetButton.addEventListener('click', this.onReset);    
+  }
+
+  displayNumOfTries(tries) {
+    this.triesDisplay.innerHTML = tries;
+  }
+
+  showResetContainer(value) {
+    this.resetContainer.style.display = value ? 'block' : 'none';
+  }
+
+  showResponse(text) {
+    this.feedback.innerHTML = text;
+  }
+
+  showEnd(text) {
+    this.showResponse(text);
+    this.showResetContainer(true);
+  }
+
+  clearInput() {
+    this.input.value = "";
+  }
 }
 
 /**********************************************************/
 
-var View = function(params) {
-  this.initElements(params);
+class Model {
+  constructor(params) {
+    this.min = params.min || 1;
+    this.max = params.max || 100;
+    this.tries = params.tries || 10;
+    this.maxTries = this.tries;  
 
-  this.onSubmit = null;
-  this.onReset = null;
+    this.setAnswer();
+  }
 
-  this.showResetContainer(false);
-}
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (this.max - this.min + 1)) + this.min;
+  }
 
-View.prototype.initElements = function(params) {
-  this.content =            params.content;
-  this.submitButton =       params.submitButton;
-  this.input =              params.input;
-  this.feedback =           params.feedback;
-  this.triesDisplay =       params.triesDisplay;
-  this.resetContainer =     params.resetContainer;
-  this.resetButton =        params.resetButton;  
-}
+  decreaseTries() {
+    this.tries -= 1;
+  }
 
-View.prototype.initEventListeners = function(submitFunction, resetFunction) {
-  this.onSubmit = submitFunction;
-  this.onReset = resetFunction;
+  hasTries() {
+    return this.tries > 0;
+  }
 
-  this.submitButton.addEventListener('click', this.onSubmit);
-  this.resetButton.addEventListener('click', this.onReset);
-}
+  resetTries() {
+    this.tries = this.maxTries;
+  }
 
-View.prototype.displayNumOfTries = function(tries) {
-  this.triesDisplay.innerHTML = tries;
-}
+  setAnswer() {
+    this.answer = this.getRandomInt();
+  }
 
-View.prototype.showResetContainer = function(value) {
-  this.resetContainer.style.display = value ? 'block' : 'none';
-}
-
-View.prototype.showTooHigh = function() {
-  this.feedback.innerHTML = 'Too high';
-}
-
-View.prototype.showTooLow = function() {
-  this.feedback.innerHTML = 'Too low';
-}
-
-View.prototype.showCorrect = function() {
-  this.feedback.innerHTML = 'That is correct!';
-  this.showResetContainer(true);
-}
-
-View.prototype.showOutOfTries = function() {
-  this.feedback.innerHTML = 'Sorry, no more tries.';
-  this.showResetContainer(true);
-}
-
-View.prototype.clearInput = function() {
-  this.input.value = "";
+  reset() {
+    this.resetTries();
+    this.setAnswer();
+  }
 }
 
 /**********************************************************/
 
-var Model = function(params) {
-  var min = params.min || 1;
-  var max = params.max || 100;
-  var tries = params.tries || 10;
-
-  this.answer = this.getRandomInt(min, max);
-  this.tries = tries;
-  this.maxTries = tries;
-}
-
-Model.prototype.getRandomInt = function(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-Model.prototype.decreaseTries = function() {
-  this.tries -= 1;
-}
-
-Model.prototype.hasTries = function() {
-  return this.tries > 0;
-}
-
-Model.prototype.resetTries = function() {
-  this.tries = this.maxTries;
-}
-
-/**********************************************************/
-
-var model = new Model({ 
+let model = new Model({ 
   min: 1, 
   max: 100, 
   tries: 10 
 });
 
-var view = new View({
+let view = new View({
   content:         document.getElementById('content'),
   submitButton:    document.getElementById('submit-button'),
   input:           document.getElementById('input-guess'),
@@ -145,4 +150,4 @@ var view = new View({
   resetButton:     document.getElementById('reset-button')
 });
 
-var controller = new Controller(view, model);
+let controller = new Controller(view, model);
