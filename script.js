@@ -59,15 +59,13 @@ class View {
   }
 
   initElements(params) {
-    this.content =            document.getElementById(params.content);
-    this.minLimit =           document.getElementById(params.minLimit);
-    this.maxLimit =           document.getElementById(params.maxLimit);
-    this.submitButton =       document.getElementById(params.submitButton);
-    this.input =              document.getElementById(params.input);
-    this.feedback =           document.getElementById(params.feedback);
-    this.triesDisplay =       document.getElementById(params.triesDisplay);
-    this.resetContainer =     document.getElementById(params.resetContainer);
-    this.resetButton =        document.getElementById(params.resetButton);      
+    const allowedElements = [
+      'content', 'minLimit', 'maxLimit', 'submitButton', 'input', 
+      'feedback', 'triesDisplay', 'resetContainer', 'resetButton'];
+
+    allowedElements.forEach(element => {
+      this[element] = document.getElementById(params[element]); 
+    });
   }
 
   initEventListeners(submitFunction, resetFunction) {
