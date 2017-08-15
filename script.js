@@ -10,6 +10,7 @@ class Controller {
 
     this.view.initEventListeners(submitFunction, resetFunction);
     this.view.displayNumOfTries(this.model.tries);
+    this.view.showRange(this.model.min, this.model.max);
   }
 
   onSubmit() {
@@ -59,6 +60,8 @@ class View {
 
   initElements(params) {
     this.content =            document.getElementById(params.content);
+    this.minLimit =           document.getElementById(params.minLimit);
+    this.maxLimit =           document.getElementById(params.maxLimit);
     this.submitButton =       document.getElementById(params.submitButton);
     this.input =              document.getElementById(params.input);
     this.feedback =           document.getElementById(params.feedback);
@@ -90,6 +93,11 @@ class View {
   showEnd(text) {
     this.showResponse(text);
     this.showResetContainer(true);
+  }
+
+  showRange(min, max) {
+    this.minLimit.innerHTML = min;
+    this.maxLimit.innerHTML = max;
   }
 
   clearInput() {
@@ -156,6 +164,8 @@ let modelData = {
 
 let viewElements = {
   content:         'content',
+  minLimit:        'min-limit',
+  maxLimit:        'max-limit',    
   submitButton:    'submit-button',
   input:           'input-guess',
   feedback:        'feedback',
