@@ -22,11 +22,8 @@ class Controller {
       if (guess == this.model.answer) {
         this.view.showEnd('That is correct!');
       } else {
-        if (guess > this.model.answer) {
-          this.view.showResponse('Too high');
-        } else {
-          this.view.showResponse('Too low');
-        }
+        let response = this.model.answer ? 'Too high' : 'Too low';
+        this.view.showResponse(response);
       }
     } else {
       this.view.showEnd('Sorry, no more tries. The correct answer is ' + this.model.answer);
