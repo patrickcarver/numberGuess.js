@@ -15,7 +15,7 @@ class Controller {
   onSubmit() {
     this.model.decreaseTries();
 
-    if (this.model.hasTries()) {
+    if (this.model.hasTries) {
       var guess = this.view.input.value;
 
       if (guess == this.model.answer) {
@@ -106,16 +106,17 @@ class Model {
     this.setAnswer();
   }
 
+  get hasTries() {
+    return this.tries > 0;
+  }
+
+
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (this.max - this.min + 1)) + this.min;
   }
 
   decreaseTries() {
     this.tries -= 1;
-  }
-
-  hasTries() {
-    return this.tries > 0;
   }
 
   resetTries() {
