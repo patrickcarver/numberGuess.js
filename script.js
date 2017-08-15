@@ -29,16 +29,19 @@ class Controller {
   displayResponse() {
     if (this.model.hasTries) {
       var guess = this.view.input.value;
-
-      if (guess == this.model.answer) {
-        this.view.showEnd('That is correct!');
-      } else {
-        let response = this.model.answer < guess ? 'Too high' : 'Too low';
-        this.view.showResponse(response);
-      }
+      this.displayFeedback(guess);
     } else {
       this.view.showEnd('Sorry, no more tries. The correct answer is ' + this.model.answer);
     }  
+  }
+
+  displayFeedback(guess) {
+    if (guess == this.model.answer) {
+      this.view.showEnd('That is correct!');
+    } else {
+      let response = this.model.answer < guess ? 'Too high' : 'Too low';
+      this.view.showResponse(response);
+    }
   }
 }
 
