@@ -9,13 +9,13 @@ class Controller {
     let resetFunction = this.onReset.bind(this);
 
     this.view.initEventListeners(submitFunction, resetFunction);
-    this.view.displayNumOfTries(this.model.tries);
+    this.view.showNumOfTries(this.model.tries);
     this.view.showRange(this.model.min, this.model.max);
   }
 
   onSubmit() {
     this.model.decreaseTries();
-    this.view.displayNumOfTries(this.model.tries);
+    this.view.showNumOfTries(this.model.tries);
     this.displayResponse();  
   }
 
@@ -73,7 +73,7 @@ class View {
     this.resetButton.addEventListener('click', this.onReset);    
   }
 
-  displayNumOfTries(tries) {
+  showNumOfTries(tries) {
     this.triesDisplay.innerHTML = tries;
   }
 
@@ -100,7 +100,7 @@ class View {
   }
 
   reset(tries) {
-    this.displayNumOfTries(tries);
+    this.showNumOfTries(tries);
     this.clearInput();
     this.showResetContainer(false);
     this.showResponse("");
@@ -122,7 +122,6 @@ class Model {
   get hasTries() {
     return this.tries > 0;
   }
-
 
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (this.max - this.min + 1)) + this.min;
