@@ -14,6 +14,7 @@ class Controller {
 
   onSubmit() {
     this.model.decreaseTries();
+    this.view.displayNumOfTries(this.model.tries);
 
     if (this.model.hasTries) {
       var guess = this.view.input.value;
@@ -26,11 +27,9 @@ class Controller {
         } else {
           this.view.showResponse('Too low');
         }
-
-        this.view.displayNumOfTries(this.model.tries);
       }
     } else {
-      this.view.showEnd('Sorry, no more tries.');
+      this.view.showEnd('Sorry, no more tries. The correct answer is ' + this.model.answer);
     }    
   }
 
@@ -39,6 +38,7 @@ class Controller {
     this.view.displayNumOfTries(this.model.tries);
     this.view.clearInput();
     this.view.showResetContainer(false);
+    this.view.showResponse("");
   }
 }
 
