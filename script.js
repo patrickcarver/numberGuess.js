@@ -58,13 +58,13 @@ class View {
   }
 
   initElements(params) {
-    this.content =            params.content;
-    this.submitButton =       params.submitButton;
-    this.input =              params.input;
-    this.feedback =           params.feedback;
-    this.triesDisplay =       params.triesDisplay;
-    this.resetContainer =     params.resetContainer;
-    this.resetButton =        params.resetButton;      
+    this.content =            document.getElementById(params.content);
+    this.submitButton =       document.getElementById(params.submitButton);
+    this.input =              document.getElementById(params.input);
+    this.feedback =           document.getElementById(params.feedback);
+    this.triesDisplay =       document.getElementById(params.triesDisplay);
+    this.resetContainer =     document.getElementById(params.resetContainer);
+    this.resetButton =        document.getElementById(params.resetButton);      
   }
 
   initEventListeners(submitFunction, resetFunction) {
@@ -139,27 +139,29 @@ class Model {
 /**********************************************************/
 
 class NumberGuessApp {
-  constructor() {
-    this.model = new Model({ 
-      min: 1, 
-      max: 100, 
-      tries: 10 
-    });
-    
-    this.view = new View({
-      content:         document.getElementById('content'),
-      submitButton:    document.getElementById('submit-button'),
-      input:           document.getElementById('input-guess'),
-      feedback:        document.getElementById('feedback'),
-      triesDisplay:    document.getElementById('number-of-guesses'),
-      resetContainer:  document.getElementById('reset-container'),
-      resetButton:     document.getElementById('reset-button')
-    });
-
+  constructor(modelData, viewElements) {
+    this.model =      new Model(modelData);    
+    this.view =       new View(viewElements);
     this.controller = new Controller(this.view, this.model);
   }
 }
 
 /**********************************************************/
 
-let app = new NumberGuessApp();
+let modelData = { 
+  min: 1, 
+  max: 100, 
+  tries: 10 
+};
+
+let viewElements = {
+  content:         'content',
+  submitButton:    'submit-button',
+  input:           'input-guess',
+  feedback:        'feedback',
+  triesDisplay:    'number-of-guesses',
+  resetContainer:  'reset-container',
+  resetButton:     'reset-button'
+};
+
+let app = new NumberGuessApp(modelData, viewElements);
