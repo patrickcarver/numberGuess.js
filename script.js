@@ -138,20 +138,28 @@ class Model {
 
 /**********************************************************/
 
-let model = new Model({ 
-  min: 1, 
-  max: 100, 
-  tries: 10 
-});
+class NumberGuessApp {
+  constructor() {
+    this.model = new Model({ 
+      min: 1, 
+      max: 100, 
+      tries: 10 
+    });
+    
+    this.view = new View({
+      content:         document.getElementById('content'),
+      submitButton:    document.getElementById('submit-button'),
+      input:           document.getElementById('input-guess'),
+      feedback:        document.getElementById('feedback'),
+      triesDisplay:    document.getElementById('number-of-guesses'),
+      resetContainer:  document.getElementById('reset-container'),
+      resetButton:     document.getElementById('reset-button')
+    });
 
-let view = new View({
-  content:         document.getElementById('content'),
-  submitButton:    document.getElementById('submit-button'),
-  input:           document.getElementById('input-guess'),
-  feedback:        document.getElementById('feedback'),
-  triesDisplay:    document.getElementById('number-of-guesses'),
-  resetContainer:  document.getElementById('reset-container'),
-  resetButton:     document.getElementById('reset-button')
-});
+    this.controller = new Controller(this.view, this.model);
+  }
+}
 
-let controller = new Controller(view, model);
+/**********************************************************/
+
+let app = new NumberGuessApp();
