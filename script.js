@@ -21,10 +21,7 @@ class Controller {
 
   onReset() {
     this.model.reset();
-    this.view.displayNumOfTries(this.model.tries);
-    this.view.clearInput();
-    this.view.showResetContainer(false);
-    this.view.showResponse("");
+    this.view.reset(this.model.tries);
   }
 
   displayResponse() {
@@ -101,6 +98,13 @@ class View {
   clearInput() {
     this.input.value = "";
   }
+
+  reset(tries) {
+    this.displayNumOfTries(tries);
+    this.clearInput();
+    this.showResetContainer(false);
+    this.showResponse("");
+  }
 }
 
 /**********************************************************/
@@ -155,9 +159,9 @@ class NumberGuessApp {
 /**********************************************************/
 
 let modelData = { 
-  min: 1, 
-  max: 100, 
-  tries: 10 
+  min:      1, 
+  max:    100, 
+  tries:   10 
 };
 
 let viewElements = {
