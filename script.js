@@ -5,7 +5,7 @@ class Controller {
     this.view = view;
     this.model = model;
 
-    let viewData = {
+    let viewModel = {
       submitFunction: this.onSubmit.bind(this),
       resetFunction: this.onReset.bind(this),
       tries: this.model.tries,
@@ -13,7 +13,7 @@ class Controller {
       max: this.model.max
     };
 
-    view.loadData(viewData);
+    view.loadViewModel(viewModel);
   }
 
   onSubmit() {
@@ -58,10 +58,10 @@ class View {
     this.showResetContainer(false);
   }
 
-  loadData(viewData) {
-    this.initEventListeners(viewData.submitFunction, viewData.resetFunction);
-    this.showNumOfTries(viewData.tries);
-    this.showRange(viewData.min, viewData.max);
+  loadViewModel(viewModel) {
+    this.initEventListeners(viewModel.submitFunction, viewModel.resetFunction);
+    this.showNumOfTries(viewModel.tries);
+    this.showRange(viewModel.min, viewModel.max);
   }
 
   initElements(params) {
