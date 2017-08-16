@@ -7,12 +7,12 @@ class Controller {
 
     let viewModel = {
       submitFunction: this.onSubmit.bind(this),
-      resetFunction: this.onReset.bind(this),
-      tries: this.model.tries,
-      min: this.model.min,
-      max: this.model.max,
-      answer: this.model.answer,
-      feedbackData: feedbackData
+      resetFunction:  this.onReset.bind(this),
+      tries:          this.model.tries,
+      min:            this.model.min,
+      max:            this.model.max,
+      answer:         this.model.answer,
+      feedbackData:   feedbackData
     };
 
     view.setViewModel(viewModel);
@@ -31,7 +31,7 @@ class Controller {
 
   displayResponse() {
     if (this.model.hasTries) {
-      var guess = this.view.input.value;
+      var guess = this.view.inputValue;
       this.displayFeedback(guess);
     } else {
       this.view.showOutOfTries();
@@ -59,6 +59,8 @@ class View {
 
     this.showResetContainer(false);
   }
+
+  get inputValue() { return this.input.value; }
 
   setViewModel(viewModel) {
     this.initEventListeners(viewModel.submitFunction, viewModel.resetFunction);
@@ -121,13 +123,9 @@ class View {
     this.maxLimit.innerHTML = max;
   }
 
-  clearInput() {
-    this.input.value = "";
-  }
-
   reset(tries) {
     this.showNumOfTries(tries);
-    this.clearInput();
+    this.inputValue = "";
     this.showResetContainer(false);
     this.setFeedbackText("");
   }
