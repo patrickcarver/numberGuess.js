@@ -61,6 +61,7 @@ class View {
   }
 
   get inputValue() { return this.input.value; }
+  set inputValue(value) { this.input.value = value; }
 
   setViewModel(viewModel) {
     this.initEventListeners(viewModel.submitFunction, viewModel.resetFunction);
