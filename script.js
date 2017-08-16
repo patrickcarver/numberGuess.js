@@ -65,6 +65,7 @@ class View {
     this.showNumOfTries(viewModel.tries);
     this.showRange(viewModel.min, viewModel.max);
     this.feedbackData = viewModel.feedbackData;
+    this.feedbackData.answer = viewModel.answer;
   }
 
   initElements(params) {
