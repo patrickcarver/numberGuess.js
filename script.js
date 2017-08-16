@@ -1,7 +1,7 @@
 /**********************************************************/
 
 class Controller {
-  constructor(view, model) {
+  constructor(view, model, feedbackData) {
     this.view = view;
     this.model = model;
 
@@ -10,10 +10,12 @@ class Controller {
       resetFunction: this.onReset.bind(this),
       tries: this.model.tries,
       min: this.model.min,
-      max: this.model.max
+      max: this.model.max,
+      answer: this.model.answer,
+      feedbackData: feedbackData
     };
 
-    view.loadViewModel(viewModel);
+    view.setViewModel(viewModel);
   }
 
   onSubmit() {
@@ -32,13 +34,13 @@ class Controller {
       var guess = this.view.input.value;
       this.displayFeedback(guess);
     } else {
-      this.view.showEnd('Sorry, no more tries. The correct answer is ' + this.model.answer);
+      this.view.showOutOfTries();
     }  
   }
 
   displayFeedback(guess) {
     if (guess == this.model.answer) {
-      this.view.showEnd('That is correct!');
+      this.view.showCorrect();
     } else {
       let response = this.model.answer < guess ? 'Too high' : 'Too low';
       this.view.showResponse(response);
@@ -58,10 +60,11 @@ class View {
     this.showResetContainer(false);
   }
 
-  loadViewModel(viewModel) {
+  setViewModel(viewModel) {
     this.initEventListeners(viewModel.submitFunction, viewModel.resetFunction);
     this.showNumOfTries(viewModel.tries);
     this.showRange(viewModel.min, viewModel.max);
+    this.feedbackData = viewModel.feedbackData;
   }
 
   initElements(params) {
@@ -88,6 +91,14 @@ class View {
 
   showResetContainer(value) {
     this.resetContainer.style.display = value ? 'block' : 'none';
+  }
+
+  showCorrect() {
+    this.showEnd(this.feedbackData.correct);
+  }
+
+  showOutOfTries() {
+    this.showEnd(this.feedbackData.outOfTries + this.feedbackData.answer);
   }
 
   showResponse(text) {
@@ -157,10 +168,10 @@ class Model {
 /**********************************************************/
 
 class NumberGuessApp {
-  constructor(modelData, viewElements) {
+  constructor(modelData, viewElements, feedbackData) {
     this.model =      new Model(modelData);    
     this.view =       new View(viewElements);
-    this.controller = new Controller(this.view, this.model);
+    this.controller = new Controller(this.view, this.model, feedbackData);
   }
 }
 
@@ -184,4 +195,11 @@ let viewElements = {
   resetButton:     'reset-button'
 };
 
-let app = new NumberGuessApp(modelData, viewElements);
+let feedbackData = {
+  tooLow: 'Too low',
+  tooHigh: 'Too high',
+  correct: 'That is correct',
+  outOfTries: 'Sorry, no more tries. The correct answer is '
+};
+
+let app = new NumberGuessApp(modelData, viewElements, feedbackData);
