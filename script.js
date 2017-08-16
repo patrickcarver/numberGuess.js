@@ -42,8 +42,8 @@ class Controller {
     if (guess == this.model.answer) {
       this.view.showCorrect();
     } else {
-      let response = this.model.answer < guess ? 'Too high' : 'Too low';
-      this.view.showResponse(response);
+      let isHigh = this.model.answer < guess;
+      this.view.showResponse(isHigh);
     }
   }
 }
@@ -85,6 +85,11 @@ class View {
     this.resetButton.addEventListener('click', this.onReset);    
   }
 
+  showResponse(isHigh) {
+    let text = isHigh ? this.feedbackData.tooHigh : this.feedbackData.tooLow;
+    this.setFeedbackText(text);
+  }
+
   showNumOfTries(tries) {
     this.triesDisplay.innerHTML = tries;
   }
@@ -101,12 +106,12 @@ class View {
     this.showEnd(this.feedbackData.outOfTries + this.feedbackData.answer);
   }
 
-  showResponse(text) {
+  setFeedbackText(text) {
     this.feedback.innerHTML = text;
   }
 
   showEnd(text) {
-    this.showResponse(text);
+    this.setFeedbackText(text);
     this.showResetContainer(true);
   }
 
@@ -123,7 +128,7 @@ class View {
     this.showNumOfTries(tries);
     this.clearInput();
     this.showResetContainer(false);
-    this.showResponse("");
+    this.setFeedbackText("");
   }
 }
 
