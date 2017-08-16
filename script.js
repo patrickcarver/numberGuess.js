@@ -5,12 +5,15 @@ class Controller {
     this.view = view;
     this.model = model;
 
-    let submitFunction = this.onSubmit.bind(this);
-    let resetFunction = this.onReset.bind(this);
+    let viewData = {
+      submitFunction: this.onSubmit.bind(this),
+      resetFunction: this.onReset.bind(this),
+      tries: this.model.tries,
+      min: this.model.min,
+      max: this.model.max
+    };
 
-    this.view.initEventListeners(submitFunction, resetFunction);
-    this.view.showNumOfTries(this.model.tries);
-    this.view.showRange(this.model.min, this.model.max);
+    view.loadData(viewData);
   }
 
   onSubmit() {
@@ -53,6 +56,12 @@ class View {
     this.onReset = null;
 
     this.showResetContainer(false);
+  }
+
+  loadData(viewData) {
+    this.initEventListeners(viewData.submitFunction, viewData.resetFunction);
+    this.showNumOfTries(viewData.tries);
+    this.showRange(viewData.min, viewData.max);
   }
 
   initElements(params) {
