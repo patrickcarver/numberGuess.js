@@ -5,7 +5,7 @@ class Controller {
     this.view = view;
     this.model = model;
 
-    let viewModel = {
+    const viewModel = {
       submitFunction: this.onSubmit.bind(this),
       resetFunction:  this.onReset.bind(this),
       tries:          this.model.tries,
@@ -31,10 +31,11 @@ class Controller {
 
   displayResponse() {
     if (this.model.hasTries) {
-      var guess = this.view.inputValue;
+      const guess = this.view.inputValue;
       this.displayFeedback(guess);
     } else {
       this.view.showOutOfTries();
+      this.view.enableSubmitButton(false);
     }  
   }
 
@@ -42,7 +43,7 @@ class Controller {
     if (guess == this.model.answer) {
       this.view.showCorrect();
     } else {
-      let isHigh = this.model.answer < guess;
+      const isHigh = this.model.answer < guess;
       this.view.showResponse(isHigh);
     }
   }
@@ -89,8 +90,12 @@ class View {
     this.resetButton.addEventListener('click', this.onReset);    
   }
 
+  enableSubmitButton(isEnabled) {
+    this.submitButton.disabled = !isEnabled;
+  }
+
   showResponse(isHigh) {
-    let text = isHigh ? this.feedbackData.tooHigh : this.feedbackData.tooLow;
+    const text = isHigh ? this.feedbackData.tooHigh : this.feedbackData.tooLow;
     this.setFeedbackText(text);
   }
 
@@ -129,6 +134,7 @@ class View {
     this.inputValue = "";
     this.showResetContainer(false);
     this.setFeedbackText("");
+    this.enableSubmitButton(true);
   }
 }
 
