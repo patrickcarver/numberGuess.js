@@ -35,7 +35,6 @@ class Controller {
       this.displayFeedback(guess);
     } else {
       this.view.showOutOfTries();
-      this.view.enableSubmitButton(false);
     }  
   }
 
@@ -121,6 +120,7 @@ class View {
 
   showEnd(text) {
     this.setFeedbackText(text);
+    this.enableSubmitButton(false);
     this.showResetContainer(true);
   }
 
