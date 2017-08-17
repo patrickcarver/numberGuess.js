@@ -1,9 +1,35 @@
+class Validator {
+  constructor() {
+    this._messages = [];
+  }
+
+  get messages() { return this._messages; }
+
+  addMessage(message) {
+    this._messages.push(message); 
+  }
+
+  call(value) {
+    this.isNotBlank(value);
+  }
+
+  isNotBlank(value) {
+    if (value === "") {
+      this.addMessage("Input cannot be blank");
+      return false
+    }
+    
+    return true;
+  }
+}
+
 /**********************************************************/
 
 class Controller {
   constructor(view, model, feedbackData) {
     this.view = view;
     this.model = model;
+    this.validator = new Validator();
 
     const viewModel = {
       submitFunction: this.onSubmit.bind(this),
@@ -19,9 +45,14 @@ class Controller {
   }
 
   onSubmit() {
-    this.model.decreaseTries();
-    this.view.showNumOfTries(this.model.tries);
-    this.displayResponse();  
+    if (this.validator.call(this.view.inputValue)) {
+      this.view.clearValidationErrors();
+      this.model.decreaseTries();
+      this.view.showNumOfTries(this.model.tries);
+      this.displayResponse();  
+    } else {
+      this.view.showValidationErrors(this.validator.messages);
+    }
   }
 
   onReset() {
@@ -50,6 +81,7 @@ class Controller {
 
 /**********************************************************/
 
+
 class View {
   constructor(params) {
     this.initElements(params);
@@ -63,6 +95,18 @@ class View {
   get inputValue() { return this.input.value; }
   set inputValue(value) { this.input.value = value; }
 
+  showValidationErrors(messages) {
+    messages.forEach(message => {
+      var element = document.createElement("li");
+      element.innerHTML = message;
+      this.validatorErrorList.appendChild(element);
+    });
+  }
+
+  clearValidationErrors() {
+
+  }
+
   setViewModel(viewModel) {
     this.initEventListeners(viewModel.submitFunction, viewModel.resetFunction);
     this.showNumOfTries(viewModel.tries);
@@ -74,7 +118,7 @@ class View {
   initElements(params) {
     const allowedElements = [
       'content', 'minLimit', 'maxLimit', 'submitButton', 'input', 
-      'feedback', 'triesDisplay', 'resetContainer', 'resetButton'];
+      'feedback', 'triesDisplay', 'resetContainer', 'resetButton', 'validatorErrorList'];
 
     allowedElements.forEach(element => {
       this[element] = document.getElementById(params[element]); 
@@ -195,21 +239,22 @@ let modelData = {
 };
 
 let viewElements = {
-  content:         'content',
-  minLimit:        'min-limit',
-  maxLimit:        'max-limit',    
-  submitButton:    'submit-button',
-  input:           'input-guess',
-  feedback:        'feedback',
-  triesDisplay:    'number-of-guesses',
-  resetContainer:  'reset-container',
-  resetButton:     'reset-button'
+  content:            'content',
+  minLimit:           'min-limit',
+  maxLimit:           'max-limit',    
+  submitButton:       'submit-button',
+  input:              'input-guess',
+  feedback:           'feedback',
+  triesDisplay:       'number-of-guesses',
+  resetContainer:     'reset-container',
+  resetButton:        'reset-button',
+  validatorErrorList: 'validator-error-list'
 };
 
 let feedbackData = {
-  tooLow: 'Too low',
-  tooHigh: 'Too high',
-  correct: 'That is correct',
+  tooLow:     'Too low',
+  tooHigh:    'Too high',
+  correct:    'That is correct',
   outOfTries: 'Sorry, no more tries. The correct answer is '
 };
 
