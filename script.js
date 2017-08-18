@@ -10,7 +10,9 @@ class Validator {
   }
 
   call(value) {
-    this.isNotBlank(value);
+    this._messages = [];
+
+    return this.isNotBlank(value);
   }
 
   isNotBlank(value) {
@@ -104,7 +106,9 @@ class View {
   }
 
   clearValidationErrors() {
-
+    while(this.validatorErrorList.firstChild) {
+      this.validatorErrorList.removeChild(this.validatorErrorList.firstChild);
+    }
   }
 
   setViewModel(viewModel) {
