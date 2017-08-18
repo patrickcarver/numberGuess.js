@@ -1,6 +1,7 @@
 class Validator {
-  constructor() {
+  constructor(limits) {
     this._messages = [];
+    this.limits = limits;
   }
 
   get messages() { return this._messages; }
@@ -15,7 +16,8 @@ class Validator {
     var input = parseInt(value, 10);
 
     return this.isNotBlank(value) && 
-           this.isInteger(input);
+           this.isInteger(input) && 
+           this.isInLimits(input);
   }
 
   isNotBlank(value) {
@@ -35,6 +37,16 @@ class Validator {
 
     return true;
   }
+
+  isInLimits(value) {
+    if (value > this.limits.max || value < this.limits.min) {
+      this.addMessage("Input should be inside limits");
+      return false;
+    }
+
+    return true;
+  }
+
 }
 
 /**********************************************************/
@@ -43,7 +55,7 @@ class Controller {
   constructor(view, model, feedbackData) {
     this.view = view;
     this.model = model;
-    this.validator = new Validator();
+    this.validator = new Validator({min: this.model.min, max: this.model.max});
 
     const viewModel = {
       submitFunction: this.onSubmit.bind(this),
@@ -110,6 +122,8 @@ class View {
   set inputValue(value) { this.input.value = value; }
 
   showValidationErrors(messages) {
+    this.clearValidationErrors();
+
     messages.forEach(message => {
       var element = document.createElement("li");
       element.innerHTML = message;
