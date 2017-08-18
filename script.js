@@ -12,8 +12,10 @@ class Validator {
   call(value) {
     this._messages = [];
 
+    var input = parseInt(value, 10);
+
     return this.isNotBlank(value) && 
-           this.isInteger(value);
+           this.isInteger(input);
   }
 
   isNotBlank(value) {
