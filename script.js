@@ -12,7 +12,8 @@ class Validator {
   call(value) {
     this._messages = [];
 
-    return this.isNotBlank(value);
+    return this.isNotBlank(value) && 
+           this.isInteger(value);
   }
 
   isNotBlank(value) {
@@ -21,6 +22,15 @@ class Validator {
       return false
     }
     
+    return true;
+  }
+
+  isInteger(value) {
+    if (!Number.isInteger(value)) {
+      this.addMessage("Input needs to be an integer");
+      return false;
+    }
+
     return true;
   }
 }
