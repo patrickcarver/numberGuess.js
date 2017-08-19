@@ -1,14 +1,31 @@
 class ValidatorModel {
   constructor(modelData) {
-    this.minLimit = modelData.min;
-    this.maxLimit = modelData.max;
+    this._minLimit = modelData.min;
+    this._maxLimit = modelData.max;
+    this._messages = [];
+  }
+
+  get minLimit() { return this._minLimit; }
+  get maxLimit() { return this._maxLimit; }
+  get messages() { return this._messages; }
+  set messages (value) { this._messages = value; }
+
+  clearMessages() {
     this.messages = [];
+  }
+
+  addMessage(message) {
+    this._messages.push(message);
   }
 }
 
 class ValidatorView {
   constructor(viewElement) {
     this.viewElement = document.getElementById(viewElement);
+  }
+
+  clearMessages() {
+
   }
 }
 
@@ -19,7 +36,51 @@ class ValidatorController {
   }
 
   isInputValid(input) {
+    let checks = {
+      isNotBlank: { value: this.isNotBlank(input), message: "Input cannot be blank" },
+      isInteger: { value: this.isInteger(input), message: "Input needs to be an integer" },
+      isInLimits: { value: this.isInLimits(input), message: "Input should be inside limits" }
+    }
+
+
+
     return true;
+  }
+
+  isNotBlank(input) {
+    if (input == "") {
+      return false;
+    }
+
+    return true;
+  }
+
+  isInteger(input) {
+    var intValue = parseInt(value, 10);
+    if (!Number.isInteger(intValue)) {
+      return false;
+    }
+
+    return true;    
+  }
+
+  isInLimits(value) {
+    var intValue = parseInt(value, 10);
+
+    if (intValue < this.minLimit || intValue > this.model.maxLimit) {
+      return false;
+    }
+
+    return true;
+  }  
+
+  showMessages() {
+    this.view.showMessages();
+  }
+
+  clearMessages() {
+    this.view.clearMessages();
+    this.model.clearMessages();
   }
 }
 
@@ -30,12 +91,16 @@ class ValidatorApp {
     this.controller = new ValidatorController(this.view, this.model);
   }
 
-  isValid(input) {
+  isInputValid(input) {
     this.controller.isInputValid(input);
   }
 
   showMessages() {
-    
+    this.controller.showMessages();
+  }
+
+  clearMessages() {
+    this.controller.clearMessages();
   }
 }
 
@@ -112,12 +177,14 @@ class Controller {
   }
 
   onSubmit() {
-    if (this.validator.isInputValid(this.view.inputValue)) {
+    const isInputValid = this.validator.isInputValid(this.view.inputValue);
+
+    if (isInputValid) {
+      this.validator.clearMessages();
       this.model.decreaseTries();
       this.view.showNumOfTries(this.model.tries);
       this.displayResponse();  
     } else {
-      //this.view.showValidationErrors(this.validator.messages);
       this.validator.showMessages();
     }
   }
