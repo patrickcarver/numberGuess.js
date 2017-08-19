@@ -24,6 +24,11 @@ class ValidatorView {
     this.viewElement = document.getElementById(viewElement);
   }
 
+  showMessages(messages) {
+    this.clearMessages();
+
+  }
+
   clearMessages() {
 
   }
@@ -38,13 +43,28 @@ class ValidatorController {
   isInputValid(input) {
     let checks = {
       isNotBlank: { value: this.isNotBlank(input), message: "Input cannot be blank" },
-      isInteger: { value: this.isInteger(input), message: "Input needs to be an integer" },
+      isInteger:  { value: this.isInteger(input),  message: "Input needs to be an integer" },
       isInLimits: { value: this.isInLimits(input), message: "Input should be inside limits" }
     }
 
+    this.setMessages(checks);
 
+    return this.areAllChecksValid(checks);
+  }
 
-    return true;
+  setMessages(checks) {
+    let notValid = this.getNotValid(checks);
+    this.model.messages = notValid.map(item => { return item.messages });
+  }
+
+  getNotValid(checks) {
+    return Object.values(checks).filter(item => { 
+      return item.value == false; 
+    });
+  }
+
+  areAllChecksValid(checks) {
+    return Object.values(checks).every(item => { return item == true; });
   }
 
   isNotBlank(input) {
@@ -75,7 +95,7 @@ class ValidatorController {
   }  
 
   showMessages() {
-    this.view.showMessages();
+    this.view.showMessages(this.model.messages);
   }
 
   clearMessages() {
