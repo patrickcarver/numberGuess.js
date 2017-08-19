@@ -1,3 +1,45 @@
+class ValidatorModel {
+  constructor(modelData) {
+    this.minLimit = modelData.min;
+    this.maxLimit = modelData.max;
+    this.messages = [];
+  }
+}
+
+class ValidatorView {
+  constructor(viewElement) {
+    this.viewElement = document.getElementById(viewElement);
+  }
+}
+
+class ValidatorController {
+  constructor(view, model) {
+    this.view = view;
+    this.model = model;
+  }
+
+  isInputValid(input) {
+    return true;
+  }
+}
+
+class ValidatorApp {
+  constructor(modelData, viewElement) {
+    this.model =      new ValidatorModel(modelData);
+    this.view =       new ValidatorView(viewElement);
+    this.controller = new ValidatorController(this.view, this.model);
+  }
+
+  isValid(input) {
+    this.controller.isInputValid(input);
+  }
+
+  showMessages() {
+    
+  }
+}
+
+
 class Validator {
   constructor(limits) {
     this._messages = [];
@@ -46,7 +88,6 @@ class Validator {
 
     return true;
   }
-
 }
 
 /**********************************************************/
@@ -55,7 +96,7 @@ class Controller {
   constructor(view, model, feedbackData) {
     this.view = view;
     this.model = model;
-    this.validator = new Validator({min: this.model.min, max: this.model.max});
+    this.validator = new ValidatorApp({min: this.model.min, max: this.model.max}, this.view.);
 
     const viewModel = {
       submitFunction: this.onSubmit.bind(this),
@@ -71,13 +112,13 @@ class Controller {
   }
 
   onSubmit() {
-    if (this.validator.call(this.view.inputValue)) {
-      this.view.clearValidationErrors();
+    if (this.validator.isInputValid(this.view.inputValue)) {
       this.model.decreaseTries();
       this.view.showNumOfTries(this.model.tries);
       this.displayResponse();  
     } else {
-      this.view.showValidationErrors(this.validator.messages);
+      //this.view.showValidationErrors(this.validator.messages);
+      this.validator.showMessages();
     }
   }
 
